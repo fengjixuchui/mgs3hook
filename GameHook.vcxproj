@@ -143,14 +143,14 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GameHook;$(ProjectDir)MSDetours/src;$(ProjectDir)dark/src/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)GameHook;$(ProjectDir)MSDetours/src;$(ProjectDir)dark/src/Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>RHook.lib;Detours.lib;libffi.lib;spdlog.lib;d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)MSDetours;$(ProjectDir)dark;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)MSDetours;$(ProjectDir)dark;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -160,15 +160,15 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)GameHook;$(ProjectDir)MSDetours/;$(ProjectDir)MSDetours/src;$(ProjectDir)dark/;$(ProjectDir)dark/src/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)GameHook;$(ProjectDir)MSDetours/src;$(ProjectDir)dark/src/Include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>RHook.lib;Detours.lib;libffi.lib;spdlog.lib;d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)MSDetours;$(ProjectDir)dark;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)MSDetours;$(ProjectDir)dark;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>Exports.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -189,7 +189,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>RHook.lib;Detours.lib;libffi.lib;spdlog.lib;d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)MSDetours;$(ProjectDir)dark;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)MSDetours;$(ProjectDir)dark;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -200,8 +200,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)GameHook;$(ProjectDir)MSDetours/;$(ProjectDir)MSDetours/src;$(ProjectDir)dark/;$(ProjectDir)dark/src/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)GameHook;$(ProjectDir)MSDetours/src;$(ProjectDir)dark/src/Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -210,7 +210,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>RHook.lib;Detours.lib;libffi.lib;spdlog.lib;d3d11.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)MSDetours;$(ProjectDir)dark;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)MSDetours;$(ProjectDir)dark;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

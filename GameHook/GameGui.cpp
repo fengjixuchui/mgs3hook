@@ -8,6 +8,12 @@
 #include "LicenseStrings.hpp"
 #include "Mods.hpp"
 
+float GameHook::trainerWidth = 0.0f;
+float GameHook::trainerMaxHeight = 0.0f;
+float GameHook::trainerHeightBorder = 0.0f;
+float GameHook::trainerVariableHeight = 0.0f;
+float GameHook::sameLineWidth = 0.0f;
+float GameHook::inputItemWidth = 0.0f;
 
 void HelpMarker(const char* desc) {
 	ImGui::SameLine();
@@ -52,77 +58,6 @@ void GameHook::gameGui(void) {
 
 		if (ImGui::BeginTabItem("Inventory")) {
 			ImGui::BeginChild("InventoryChild");
-			ImGui::Text("Recovery");
-			static bool frameOne = true;
-			for (auto& inventoryEntry : recoveryInventoryVec) {
-				static int index = 1;
-				uintptr_t inventoryItemAddress = GameHook::_baseAddress + inventoryEntry.second;
-				int* inventoryItem = (int*)inventoryItemAddress;
-				ImGui::PushItemWidth(inputItemWidth / 5);
-				ImGui::InputScalar(inventoryEntry.first.c_str(), ImGuiDataType_U8, inventoryItem);
-				ImGui::PopItemWidth();
-				if (index != recoveryInventoryVec.size() && index % 2 != 0)
-					ImGui::SameLine(sameLineWidth);
-				if (index == recoveryInventoryVec.size())
-					index = 0;
-				index++;
-			}
-			ImGui::Text("Cultivation");
-			for (auto& inventoryEntry : cultivationInventoryVec) {
-				static int index = 1;
-				uintptr_t inventoryItemAddress = GameHook::_baseAddress + inventoryEntry.second;
-				int* inventoryItem = (int*)inventoryItemAddress;
-				ImGui::PushItemWidth(inputItemWidth / 5);
-				ImGui::InputScalar(inventoryEntry.first.c_str(), ImGuiDataType_U8, inventoryItem);
-				ImGui::PopItemWidth();
-				if (index != cultivationInventoryVec.size() && index % 2 != 0)
-					ImGui::SameLine(sameLineWidth);
-				if (index == cultivationInventoryVec.size())
-					index = 0;
-				index++;
-			}
-			ImGui::Text("Fishing");
-			for (auto& inventoryEntry : fishingInventoryVec) {
-				static int index = 1;
-				uintptr_t inventoryItemAddress = GameHook::_baseAddress + inventoryEntry.second;
-				int* inventoryItem = (int*)inventoryItemAddress;
-				ImGui::PushItemWidth(inputItemWidth / 5);
-				ImGui::InputScalar(inventoryEntry.first.c_str(), ImGuiDataType_U8, inventoryItem);
-				ImGui::PopItemWidth();
-				if (index != fishingInventoryVec.size() && index % 2 != 0)
-					ImGui::SameLine(sameLineWidth);
-				if (index == fishingInventoryVec.size())
-					index = 0;
-				index++;
-			}
-			ImGui::Text("Materials");
-			for (auto& inventoryEntry : materialsInventoryVec) {
-				static int index = 1;
-				uintptr_t inventoryItemAddress = GameHook::_baseAddress + inventoryEntry.second;
-				int* inventoryItem = (int*)inventoryItemAddress;
-				ImGui::PushItemWidth(inputItemWidth / 5);
-				ImGui::InputScalar(inventoryEntry.first.c_str(), ImGuiDataType_U8, inventoryItem);
-				ImGui::PopItemWidth();
-				if (index != materialsInventoryVec.size() && index % 2 != 0)
-					ImGui::SameLine(sameLineWidth);
-				if (index == materialsInventoryVec.size())
-					index = 0;
-				index++;
-			}
-			ImGui::Text("Key");
-			for (auto& inventoryEntry : keyInventoryVec) {
-				static int index = 1;
-				uintptr_t inventoryItemAddress = GameHook::_baseAddress + inventoryEntry.second;
-				int* inventoryItem = (int*)inventoryItemAddress;
-				ImGui::PushItemWidth(inputItemWidth / 5);
-				ImGui::InputScalar(inventoryEntry.first.c_str(), ImGuiDataType_U8, inventoryItem);
-				ImGui::PopItemWidth();
-				if (index != keyInventoryVec.size() && index % 2 != 0)
-					ImGui::SameLine(sameLineWidth);
-				if (index == keyInventoryVec.size())
-					index = 0;
-				index++;
-			}
 
 			trainerVariableHeight = std::clamp(ImGui::GetCursorPosY() + trainerHeightBorder, 0.0f, trainerMaxHeight);
 			ImGui::EndChild();
@@ -131,15 +66,6 @@ void GameHook::gameGui(void) {
 
 		if (ImGui::BeginTabItem("System")) {
 			ImGui::BeginChild("SystemChild");
-			if (ImGui::Checkbox("Disable cursor", &GameHook::cursorForceHidden_toggle)) { // toggle 
-				GameHook::cursorForceHidden(GameHook::cursorForceHidden_toggle);
-			}
-			HelpMarker("Disable the cursor display while using a gamepad. This can be toggled mid play with INSERT");
-			ImGui::SameLine(sameLineWidth);
-			if (ImGui::Checkbox("Force Models Visibile", &GameHook::forceModelsVisible_toggle)) { // toggle
-				GameHook::forceModelsVisible(GameHook::forceModelsVisible_toggle);
-			}
-			HelpMarker("Stop models becoming transparent when the camera gets too close");
 
 			trainerVariableHeight = std::clamp(ImGui::GetCursorPosY() + trainerHeightBorder, 0.0f, trainerMaxHeight);
 			ImGui::EndChild();
@@ -149,7 +75,7 @@ void GameHook::gameGui(void) {
 		if (ImGui::BeginTabItem("Credits")) {
 			ImGui::BeginChild("CreditsChild");
 			ImGui::TextWrapped("WARNING: PLEASE BACK UP YOUR SAVEDATA BEFORE USING THIS HOOK.");
-			ImGui::TextWrapped("I haven't had any save corruption issues, but this is a long game and "
+			ImGui::TextWrapped("I haven't had any save corruption issues, but"
 				"I would hate for anyone to lose their saves because of me.");
 			ImGui::TextWrapped("By default your save is found here:");
 			ImGui::SameLine();
@@ -191,7 +117,6 @@ void GameHook::gameGui(void) {
 			static std::array<ImGuiURL, 4> links1{
 				ImGuiURL { "SSSiyan", "https://twitter.com/SSSiyan" },
 				ImGuiURL { "Darkness", "https://github.com/amir-120/" },
-				ImGuiURL { "Asiern", "https://github.com/Asiern/" },
 				ImGuiURL { "deepdarkkapustka", "https://www.youtube.com/@mstislavcapusta7573" },
 			};
 			for (auto& link : links1) {

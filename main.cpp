@@ -4,8 +4,8 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
-#include "GameHook/GameHook.hpp"
-#include "GameHook/Mods.hpp"
+#include "GameHook.hpp"
+#include "Mods.hpp"
 
 #define EXCLUDE_RHOOK_D3D9
 #define EXCLUDE_RHOOK_D3D10
@@ -31,10 +31,10 @@ static bool imguiDraw = false;
 
 void OpenedHook() {
 	imguiDraw = !imguiDraw;
-	if (imguiDraw)
-		GameHook::stealCursor(true);
-	else
-		GameHook::stealCursor(false);
+	//if (imguiDraw)
+		//GameHook::stealCursor(true);
+	//else
+		//GameHook::stealCursor(false);
 }
 
 void __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -49,8 +49,8 @@ void __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			OpenedHook();
 			break;
 		case VK_INSERT: // toggle cursor
-			GameHook::cursorForceHidden_toggle = !GameHook::cursorForceHidden_toggle;
-			GameHook::cursorForceHidden(GameHook::cursorForceHidden_toggle);
+			//GameHook::cursorForceHidden_toggle = !GameHook::cursorForceHidden_toggle;
+			//GameHook::cursorForceHidden(GameHook::cursorForceHidden_toggle);
 			break;
 		default:
 			break;
@@ -148,9 +148,10 @@ void InitHook() {
 	GameHook::_hook();
 
 	// get inventory addresses
-	GameHook::getInventoryAddresses();
+
 
 	// load settings, must happen after hook
+	/*
 	GameHook::onConfigLoad(GameHook::cfg);
 	Mods::GetInstance()->LoadConfig(GameHook::cfg);
 
@@ -166,6 +167,7 @@ void InitHook() {
 	if (const auto sampleMod = Mods::GetInstance()->GetMod("SampleMod")) {
 		GameHook::sampleMod1Init = sampleMod->IsInitialized();
 	}
+	*/
 }
 
 std::unique_ptr<WindowsMessageHook> g_WindowsMessageHook{};
@@ -214,14 +216,6 @@ void __stdcall hkPresent(RHook::D3D11Hook* pd3d11Hook) {
 	}
 
 	// force character on tick
-	if (GameHook::forceCharSelect_toggle && GameHook::spoiler_toggle) {
-		GameHook::forceCharSelect(GameHook::forceCharSelect_num);
-	
-		// if character is 4, force old save stats
-		if (GameHook::forceCharSelect_num == 4) {
-			GameHook::forceEndgameStats(true);
-		}
-	}
 
 	// if display is toggled off, don't display imgui menu
 	if (!imguiDraw) {

@@ -33,3 +33,6 @@
 
 # Build folder
 /x64
+
+# VS
+/.vs
