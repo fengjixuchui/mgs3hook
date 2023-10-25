@@ -4,8 +4,8 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
-#include "ReplicantHook/ReplicantHook.hpp"
-#include "Mods.hpp"
+#include "GameHook/GameHook.hpp"
+#include "GameHook/Mods.hpp"
 
 #define EXCLUDE_RHOOK_D3D9
 #define EXCLUDE_RHOOK_D3D10
@@ -32,9 +32,9 @@ static bool imguiDraw = false;
 void OpenedHook() {
 	imguiDraw = !imguiDraw;
 	if (imguiDraw)
-		ReplicantHook::stealCursor(true);
+		GameHook::stealCursor(true);
 	else
-		ReplicantHook::stealCursor(false);
+		GameHook::stealCursor(false);
 }
 
 void __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
@@ -49,8 +49,8 @@ void __stdcall WndProc(const HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			OpenedHook();
 			break;
 		case VK_INSERT: // toggle cursor
-			ReplicantHook::cursorForceHidden_toggle = !ReplicantHook::cursorForceHidden_toggle;
-			ReplicantHook::cursorForceHidden(ReplicantHook::cursorForceHidden_toggle);
+			GameHook::cursorForceHidden_toggle = !GameHook::cursorForceHidden_toggle;
+			GameHook::cursorForceHidden(GameHook::cursorForceHidden_toggle);
 			break;
 		default:
 			break;
@@ -145,14 +145,14 @@ void hkResizeBuffers(RHook::D3D11Hook* pd3d11Hook) {
 
 void InitHook() {
 	// get process ID and module base address
-	ReplicantHook::_hook();
+	GameHook::_hook();
 
 	// get inventory addresses
-	ReplicantHook::getInventoryAddresses();
+	GameHook::getInventoryAddresses();
 
 	// load settings, must happen after hook
-	ReplicantHook::onConfigLoad(ReplicantHook::cfg);
-	Mods::GetInstance()->LoadConfig(ReplicantHook::cfg);
+	GameHook::onConfigLoad(GameHook::cfg);
+	Mods::GetInstance()->LoadConfig(GameHook::cfg);
 
 	// init mods if they are not initialized yet (can be done on another thread)
 	if (!Mods::GetInstance()->IsInitialized()) {
@@ -164,7 +164,7 @@ void InitHook() {
 	}
 	
 	if (const auto sampleMod = Mods::GetInstance()->GetMod("SampleMod")) {
-		ReplicantHook::sampleMod1Init = sampleMod->IsInitialized();
+		GameHook::sampleMod1Init = sampleMod->IsInitialized();
 	}
 }
 
@@ -209,17 +209,17 @@ void __stdcall hkPresent(RHook::D3D11Hook* pd3d11Hook) {
 	}
 
 	// check process ID is valid
-	if (ReplicantHook::_pID != ReplicantHook::_getProcessID()) {
+	if (GameHook::_pID != GameHook::_getProcessID()) {
 		goto imgui_finish;
 	}
 
 	// force character on tick
-	if (ReplicantHook::forceCharSelect_toggle && ReplicantHook::spoiler_toggle) {
-		ReplicantHook::forceCharSelect(ReplicantHook::forceCharSelect_num);
+	if (GameHook::forceCharSelect_toggle && GameHook::spoiler_toggle) {
+		GameHook::forceCharSelect(GameHook::forceCharSelect_num);
 	
 		// if character is 4, force old save stats
-		if (ReplicantHook::forceCharSelect_num == 4) {
-			ReplicantHook::forceEndgameStats(true);
+		if (GameHook::forceCharSelect_num == 4) {
+			GameHook::forceEndgameStats(true);
 		}
 	}
 
@@ -233,9 +233,9 @@ void __stdcall hkPresent(RHook::D3D11Hook* pd3d11Hook) {
 	ImGui::NewFrame();
 
 	ImGui::SetNextWindowPos(ImVec2(0, 0)), ImGuiCond_Always;
-	ImGui::SetNextWindowSize(ImVec2(ReplicantHook::trainerWidth, ReplicantHook::trainerVariableHeight)), ImGuiCond_Always;
-	ImGui::Begin(ReplicantHook::dllName, NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-	ReplicantHook::gameGui();
+	ImGui::SetNextWindowSize(ImVec2(GameHook::trainerWidth, GameHook::trainerVariableHeight)), ImGuiCond_Always;
+	ImGui::Begin(GameHook::dllName, NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+	GameHook::gameGui();
 	ImGui::End();
 
 	ImGui::Render();

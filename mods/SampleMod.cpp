@@ -13,7 +13,7 @@ extern "C" {
 }
 
 bool SampleMod::InitializeDetour1() {
-	void* aobToReplaceAddr = (void*)(ReplicantHook::_baseAddress + 0x6C28D8); // The address you want to put your code in
+	void* aobToReplaceAddr = (void*)(GameHook::_baseAddress + 0x6C28D8); // The address you want to put your code in
 	void* detourAddr = &SampleModDetour1; // The address of your detour function
 	m_Detour1 = std::make_unique<utility::Detour_t>(aobToReplaceAddr, detourAddr);
 	return m_Detour1->IsValid();

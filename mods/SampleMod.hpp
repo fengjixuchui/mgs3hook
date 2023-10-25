@@ -2,7 +2,7 @@
 #include "Mod.hpp"
 #include "../utils/Detour.hpp"
 #include <memory>
-#include "ReplicantHook.hpp"
+#include "GameHook.hpp"
 
 class SampleMod : public Mod
 {
